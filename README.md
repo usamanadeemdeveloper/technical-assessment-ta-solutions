@@ -29,12 +29,4 @@ Frontend runs on `http://localhost:4200`.
 - `GET /currencies`
 - `GET /convert?from=USD&to=EUR&amount=100&date=2024-01-01`
 
-## Deployment Notes
-### Backend
-- Set `FREE_CURRENCY_API_KEY` and `ALLOWED_ORIGINS` (comma-separated).
-
-### Frontend (Netlify)
-- Update `frontend/src/environments/environment.prod.ts` with your deployed backend URL.
-- Run `pnpm build` and publish `frontend/dist/frontend`.
-
 If pnpm reports ignored build scripts, run `pnpm approve-builds` inside the affected package.
