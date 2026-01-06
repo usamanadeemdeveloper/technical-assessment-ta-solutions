@@ -1,3 +1,3 @@
 export const environment = {
-  apiBaseUrl: 'https://your-backend-url',
+  apiBaseUrl: 'https://technical-assessment-ta-solutions-8h5rgoio6.vercel.app',
 };
