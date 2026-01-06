@@ -20,10 +20,5 @@ export default async function handler(
   res: VercelResponse,
 ): Promise<void> {
   const server = await getServer();
-  return new Promise((resolve, reject) => {
-    server(req as any, res as any, (err: any) => {
-      if (err) return reject(err);
-      resolve();
-    });
-  });
+  server.emit('request', req, res);
 }
