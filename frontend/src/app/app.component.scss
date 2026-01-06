@@ -1,0 +1,64 @@
+.app-shell {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hero {
+  display: grid;
+  gap: 12px;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-500);
+}
+
+h1 {
+  font-size: clamp(2rem, 6vw, 3.1rem);
+  line-height: 1.05;
+  margin: 0;
+  color: var(--ink-900);
+}
+
+.subtitle {
+  max-width: 48ch;
+  color: var(--ink-600);
+  font-size: 1rem;
+}
+
+.content-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.panel {
+  animation: riseIn 0.6s ease both;
+}
+
+.panel:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+@media (min-width: 900px) {
+  .content-grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: start;
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

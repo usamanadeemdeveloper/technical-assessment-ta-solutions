@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Background -->
+  <rect x="2" y="2" width="28" height="28" rx="4" ry="4" fill="#00D4AA" opacity="0.1"/>
+  <rect x="2" y="2" width="28" height="28" rx="4" ry="4" fill="none" stroke="#00D4AA" stroke-width="1"/>
+  
+  <!-- "ta" text optimized for 32x32 -->
+  <text x="7" y="22" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2B3D3A">t</text>
+  <text x="15" y="22" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#00A693">a</text>
+  
+  <!-- Small decorative dot -->
+  <circle cx="5" cy="26" r="1.5" fill="#00D4AA"/>
+</svg>

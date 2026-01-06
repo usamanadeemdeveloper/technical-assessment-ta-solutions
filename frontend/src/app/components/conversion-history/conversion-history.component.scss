@@ -1,0 +1,82 @@
+.history-card {
+  position: relative;
+  height: fit-content;
+  max-height: 600px;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink-500);
+}
+
+.empty {
+  color: var(--ink-500);
+  font-size: 0.95rem;
+}
+
+.history-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.history-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background: var(--ink-500);
+  border-radius: 3px;
+  opacity: 0.3;
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+  opacity: 0.6;
+}
+
+.history-item {
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--surface-alt);
+  display: grid;
+  gap: 6px;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-weight: 600;
+}
+
+.arrow {
+  color: var(--accent);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: var(--ink-600);
+  font-size: 0.82rem;
+}
+
+.dot {
+  opacity: 0.45;
+}
+
+.rate {
+  color: var(--ink-600);
+  font-size: 0.85rem;
+}

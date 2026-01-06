@@ -1,0 +1,39 @@
+<mat-card class="history-card">
+  <mat-card-header>
+    <mat-card-title>Conversion history</mat-card-title>
+    <mat-card-subtitle>Saved locally on this device</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="loading" *ngIf="loading()">
+      <mat-progress-spinner diameter="26" mode="indeterminate"></mat-progress-spinner>
+      <span>Loading history...</span>
+    </div>
+
+    <div class="empty" *ngIf="!loading() && records().length === 0">
+      No conversions yet. Your recent activity will appear here.
+    </div>
+
+    <div class="history-list" *ngIf="!loading() && records().length > 0">
+      <div class="history-item" *ngFor="let record of records(); trackBy: trackById">
+        <div class="line">
+          <span class="amount">
+            {{ record.amount | number:'1.2-2' }} {{ record.from }}
+          </span>
+          <span class="arrow">-></span>
+          <span class="amount">
+            {{ record.converted | number:'1.2-2' }} {{ record.to }}
+          </span>
+        </div>
+        <div class="meta">
+          <span>
+            {{ record.dateSelected ? ('Rate date: ' + record.dateSelected) : 'Latest rate' }}
+          </span>
+          <span class="dot">|</span>
+          <span>{{ record.timestamp | date:'medium' }}</span>
+        </div>
+        <div class="rate">Rate: {{ record.rate | number:'1.4-6' }}</div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

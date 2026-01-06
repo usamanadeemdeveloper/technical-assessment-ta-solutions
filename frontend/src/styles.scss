@@ -1,0 +1,107 @@
+@use '@angular/material' as mat;
+
+$theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$cyan-palette,
+    tertiary: mat.$yellow-palette,
+  ),
+  typography: (
+    brand-family: 'Sora',
+    plain-family: 'Sora',
+    bold-weight: 700,
+    medium-weight: 600,
+    regular-weight: 400,
+  ),
+  density: (
+    scale: 0,
+  ),
+));
+
+@include mat.core();
+
+html {
+  @include mat.all-component-themes($theme);
+}
+
+:root {
+  --ink-900: #1f2422;
+  --ink-700: #2f3432;
+  --ink-600: #4f5753;
+  --ink-500: #6b726e;
+  --surface: #ffffff;
+  --surface-alt: #f3efe8;
+  --accent: #0b7f6c;
+  --accent-soft: #0f9b88;
+  --shadow: 0 20px 45px rgba(24, 28, 26, 0.12);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Sora', 'Segoe UI', system-ui, sans-serif;
+  color: var(--ink-900);
+  background:
+    radial-gradient(120% 80% at 10% 10%, #f8f1e6 0%, transparent 60%),
+    radial-gradient(90% 70% at 90% 0%, #e1f2ee 0%, transparent 55%),
+    linear-gradient(180deg, #fdfbf7 0%, #f4f0ea 100%);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(35% 25% at 70% 20%, rgba(15, 155, 136, 0.12), transparent 60%),
+    radial-gradient(30% 20% at 20% 70%, rgba(250, 193, 102, 0.12), transparent 60%);
+  opacity: 0.9;
+}
+
+app-root {
+  position: relative;
+  display: block;
+  z-index: 1;
+}
+
+.mat-mdc-card {
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  background: var(--surface);
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-form-field input[type='number']::-webkit-outer-spin-button,
+.mat-mdc-form-field input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.mat-mdc-form-field input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button {
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
