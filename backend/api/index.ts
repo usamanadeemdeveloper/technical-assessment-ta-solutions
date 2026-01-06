@@ -1,10 +1,11 @@
 import express, { Request, Response } from 'express';
+import type { Application } from 'express';
 
 import { createApp } from '../src/bootstrap';
 
-let cachedServer: express.Express | null = null;
+let cachedServer: Application | null = null;
 
-const getServer = async (): Promise<express.Express> => {
+const getServer = async (): Promise<Application> => {
   if (!cachedServer) {
     const server = express();
     await createApp(server);
@@ -19,5 +20,6 @@ export default async function handler(
   res: Response,
 ): Promise<void> {
   const server = await getServer();
-  server(req, res);
+  const fn = server as unknown as (req: Request, res: Response) => void;
+  fn(req, res);
 }
