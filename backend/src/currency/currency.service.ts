@@ -1,6 +1,8 @@
 import {
   BadGatewayException,
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -28,7 +30,8 @@ export class CurrencyService {
     private readonly config: ConfigService,
   ) {
     this.apiKey = this.config.getOrThrow<string>('FREE_CURRENCY_API_KEY');
-    this.baseUrl = this.config.get<string>('FREE_CURRENCY_API_BASE_URL') ??
+    this.baseUrl =
+      this.config.get<string>('FREE_CURRENCY_API_BASE_URL') ??
       'https://api.freecurrencyapi.com/v1';
   }
 
@@ -93,22 +96,33 @@ export class CurrencyService {
       );
 
       return response.data;
-    } catch (error: any) {
-      console.log('API Error:', error?.response?.data || error?.message || error);
-      
-      const apiMessage = error?.response?.data?.message;
+    } catch (error) {
+      const response = (
+        error as { response?: { status?: number; data?: { message?: string } } }
+      ).response;
+      const status = response?.status;
+      const apiMessage =
+        typeof response?.data?.message === 'string'
+          ? response.data.message
+          : undefined;
+
+      if (status === 429) {
+        throw new HttpException(
+          apiMessage ?? 'API quota exceeded. Please try again later.',
+          HttpStatus.TOO_MANY_REQUESTS,
+        );
+      }
+
+      if (status && status >= 400 && status < 500) {
+        throw new BadRequestException(
+          apiMessage ?? 'Invalid request to currency API.',
+        );
+      }
+
       if (apiMessage) {
-        if (apiMessage.includes('monthly requests')) {
-          throw new BadGatewayException('API quota exceeded. Please check your FreeCurrency API subscription.');
-        }
         throw new BadGatewayException(apiMessage);
       }
-      
-      const axiosMessage = error?.message;
-      if (axiosMessage) {
-        throw new BadGatewayException(`Connection error: ${axiosMessage}`);
-      }
-      
+
       throw new BadGatewayException('Failed to fetch data from currency API.');
     }
   }
@@ -154,9 +168,23 @@ export class CurrencyService {
 
   private assertNotFutureDate(date: string): void {
     const [year, month, day] = date.split('-').map(Number);
+
+    if (
+      !Number.isInteger(year) ||
+      !Number.isInteger(month) ||
+      !Number.isInteger(day)
+    ) {
+      throw new BadRequestException('Invalid date format.');
+    }
+
     const candidate = new Date(Date.UTC(year, month - 1, day));
 
-    if (Number.isNaN(candidate.getTime())) {
+    if (
+      Number.isNaN(candidate.getTime()) ||
+      candidate.getUTCFullYear() !== year ||
+      candidate.getUTCMonth() !== month - 1 ||
+      candidate.getUTCDate() !== day
+    ) {
       throw new BadRequestException('Invalid date format.');
     }
 

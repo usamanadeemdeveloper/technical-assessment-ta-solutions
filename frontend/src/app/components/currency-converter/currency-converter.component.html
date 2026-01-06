@@ -4,6 +4,12 @@
     <mat-card-subtitle>Live and historical exchange rates</mat-card-subtitle>
   </mat-card-header>
 
+  <mat-progress-bar
+    *ngIf="converting()"
+    mode="indeterminate"
+    class="convert-loader"
+  ></mat-progress-bar>
+
   <mat-card-content>
     <form class="converter-form" [formGroup]="form" (ngSubmit)="onConvert()">
       <mat-form-field appearance="outline">
@@ -14,8 +20,8 @@
           formControlName="amount"
           appNumericOnly
           inputmode="decimal"
-          min="0"
-          step="0.01"
+          min="0.01"
+          step="0.000001"
           aria-labelledby="amount-label"
         >
         <mat-error

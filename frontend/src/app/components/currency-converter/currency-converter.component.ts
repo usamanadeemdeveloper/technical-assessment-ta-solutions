@@ -2,9 +2,11 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,8 +14,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
 import { firstValueFrom } from 'rxjs';
@@ -33,6 +35,22 @@ type ConverterForm = FormGroup<{
   date: FormControl<Date | null>;
 }>;
 
+const maxDecimalPlaces =
+  (max: number) =>
+  (control: AbstractControl<number>): ValidationErrors | null => {
+    const value = control.value;
+    if (value === null || value === undefined) {
+      return null;
+    }
+
+    const [, decimals] = value.toString().split('.');
+    if (decimals && decimals.length > max) {
+      return { maxDecimals: { max, actual: decimals.length } };
+    }
+
+    return null;
+  };
+
 @Component({
   selector: 'app-currency-converter',
   standalone: true,
@@ -42,12 +60,12 @@ type ConverterForm = FormGroup<{
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule,
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     NumericOnlyDirective,
   ],
   templateUrl: './currency-converter.component.html',
@@ -70,7 +88,11 @@ export class CurrencyConverterComponent implements OnInit {
     this.form = new FormGroup({
       amount: new FormControl(1, {
         nonNullable: true,
-        validators: [Validators.required, Validators.min(0.01)],
+        validators: [
+          Validators.required,
+          Validators.min(0.01),
+          maxDecimalPlaces(6),
+        ],
       }),
       from: new FormControl('', {
         nonNullable: true,
