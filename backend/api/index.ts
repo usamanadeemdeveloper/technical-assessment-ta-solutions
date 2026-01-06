@@ -1,5 +1,4 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 import { createApp } from '../src/bootstrap';
 
@@ -16,9 +15,9 @@ const getServer = async (): Promise<express.Express> => {
 };
 
 export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse,
+  req: Request,
+  res: Response,
 ): Promise<void> {
   const server = await getServer();
-  server.emit('request', req, res);
+  server(req, res);
 }
