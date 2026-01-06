@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 import express from 'express';
 
 import { createApp } from '../src/bootstrap';
@@ -12,13 +12,18 @@ const getServer = async (): Promise<express.Express> => {
     cachedServer = server;
   }
 
-  return cachedServer;
+  return cachedServer!;
 };
 
 export default async function handler(
-  req: Request,
-  res: Response,
+  req: VercelRequest,
+  res: VercelResponse,
 ): Promise<void> {
   const server = await getServer();
-  server(req, res);
+  return new Promise((resolve, reject) => {
+    server(req as any, res as any, (err: any) => {
+      if (err) return reject(err);
+      resolve();
+    });
+  });
 }
